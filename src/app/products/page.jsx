@@ -5,12 +5,14 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import useIsMobile from '../../hooks/useIsMobile'; // Add this import
 
 // Dynamically import canvas component with SSR disabled
 const PaintCanvas = dynamic(() => import('../../components/PaintCanvas'), { ssr: false });
 
 export default function ProductsPage() {
   const [isMounted, setIsMounted] = useState(false);
+  const isMobile = useIsMobile(); // Add this line
 
   useEffect(() => {
     setIsMounted(true);
@@ -55,59 +57,129 @@ export default function ProductsPage() {
       >
         {/* Red blob */}
         <motion.div
-          className="absolute rounded-full blur-2xl opacity-40"
-          style={{ background: "#ff1744", width: 320, height: 320, top: 80, left: 40 }}
-          animate={{
-            y: [0, 40, -30, 0],
-            x: [0, 30, -20, 0],
-            scale: [1, 1.15, 0.95, 1],
+          className="absolute rounded-full"
+          style={{
+            background: "#ff1744",
+            width: isMobile ? 120 : 320,
+            height: isMobile ? 120 : 320,
+            top: isMobile ? 30 : 80,
+            left: isMobile ? 10 : 40,
+            filter: isMobile ? "blur(8px)" : "blur(32px)",
+            opacity: isMobile ? 0.12 : 0.40,
+            willChange: "transform, opacity"
           }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          animate={{
+            y: isMobile ? [0, 12, -8, 0] : [0, 40, -30, 0],
+            x: isMobile ? [0, 8, -6, 0] : [0, 30, -20, 0],
+            scale: [1, isMobile ? 1.05 : 1.15, isMobile ? 0.98 : 0.95, 1],
+          }}
+          transition={{
+            duration: isMobile ? 10 : 18,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
         />
         {/* Yellow blob */}
         <motion.div
-          className="absolute rounded-full blur-2xl opacity-30"
-          style={{ background: "#ffd600", width: 260, height: 260, top: 200, right: 60 }}
-          animate={{
-            y: [0, -30, 30, 0],
-            x: [0, -20, 20, 0],
-            scale: [1, 1.1, 0.9, 1],
+          className="absolute rounded-full"
+          style={{
+            background: "#ffd600",
+            width: isMobile ? 90 : 260,
+            height: isMobile ? 90 : 260,
+            top: isMobile ? 80 : 200,
+            right: isMobile ? 20 : 60,
+            filter: isMobile ? "blur(8px)" : "blur(32px)",
+            opacity: isMobile ? 0.09 : 0.30,
+            willChange: "transform, opacity"
           }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Blue blob */}
-        <motion.div
-          className="absolute rounded-full blur-2xl opacity-30"
-          style={{ background: "#2979ff", width: 300, height: 300, bottom: 80, left: 120 }}
           animate={{
-            y: [0, 30, -30, 0],
-            x: [0, 20, -20, 0],
-            scale: [1, 1.12, 0.98, 1],
+            y: isMobile ? [0, -8, 8, 0] : [0, -30, 30, 0],
+            x: isMobile ? [0, -6, 6, 0] : [0, -20, 20, 0],
+            scale: [1, isMobile ? 1.03 : 1.1, isMobile ? 0.97 : 0.9, 1],
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Green blob */}
-        <motion.div
-          className="absolute rounded-full blur-2xl opacity-30"
-          style={{ background: "#00e676", width: 220, height: 220, bottom: 100, right: 100 }}
-          animate={{
-            y: [0, -20, 20, 0],
-            x: [0, 15, -15, 0],
-            scale: [1, 1.08, 0.92, 1],
+          transition={{
+            duration: isMobile ? 12 : 22,
+            repeat: Infinity,
+            ease: "easeInOut"
           }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Magenta blob */}
-        <motion.div
-          className="absolute rounded-full blur-2xl opacity-30"
-          style={{ background: "#d500f9", width: 180, height: 180, top: 400, left: "50%" }}
-          animate={{
-            y: [0, 15, -15, 0],
-            x: [0, -10, 10, 0],
-            scale: [1, 1.1, 0.9, 1],
-          }}
-          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
-        />
+        {/* Only show extra blobs on desktop */}
+        {!isMobile && (
+          <>
+            {/* Blue blob */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#2979ff",
+                width: 300,
+                height: 300,
+                bottom: 80,
+                left: 120,
+                filter: "blur(32px)",
+                opacity: 0.30,
+                willChange: "transform, opacity"
+              }}
+              animate={{
+                y: [0, 30, -30, 0],
+                x: [0, 20, -20, 0],
+                scale: [1, 1.12, 0.98, 1],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            {/* Green blob */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#00e676",
+                width: 220,
+                height: 220,
+                bottom: 100,
+                right: 100,
+                filter: "blur(32px)",
+                opacity: 0.30,
+                willChange: "transform, opacity"
+              }}
+              animate={{
+                y: [0, -20, 20, 0],
+                x: [0, 15, -15, 0],
+                scale: [1, 1.08, 0.92, 1],
+              }}
+              transition={{
+                duration: 24,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            {/* Magenta blob */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#d500f9",
+                width: 180,
+                height: 180,
+                top: 400,
+                left: "50%",
+                filter: "blur(32px)",
+                opacity: 0.30,
+                willChange: "transform, opacity"
+              }}
+              animate={{
+                y: [0, 15, -15, 0],
+                x: [0, -10, 10, 0],
+                scale: [1, 1.1, 0.9, 1],
+              }}
+              transition={{
+                duration: 26,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          </>
+        )}
         {/* Soft white overlay for luminosity */}
         <div className="absolute inset-0 bg-white/60 pointer-events-none" />
       </motion.div>

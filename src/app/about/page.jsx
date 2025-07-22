@@ -3,8 +3,11 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import useIsMobile from "@/hooks/useIsMobile";
 
 export default function AboutPage() {
+  const isMobile = useIsMobile();
+
   // Paint color palette for various sections
   const paintColors = [
     "from-red-500 via-red-400 to-red-600",
@@ -80,70 +83,137 @@ export default function AboutPage() {
       >
         {/* Red blob */}
         <motion.div
-          className="absolute rounded-full blur-2xl opacity-35"
-          style={{ background: "#ff1744", width: 320, height: 320, top: 80, left: 40 }}
-          animate={{
-            y: [0, 50, -35, 0],
-            x: [0, 35, -25, 0],
-            scale: [1, 1.18, 0.93, 1],
+          className="absolute rounded-full"
+          style={{
+            background: "#ff1744",
+            width: isMobile ? 120 : 320,
+            height: isMobile ? 120 : 320,
+            top: isMobile ? 30 : 80,
+            left: isMobile ? 10 : 40,
+            filter: isMobile ? "blur(8px)" : "blur(32px)",
+            opacity: isMobile ? 0.13 : 0.35,
+            willChange: "transform, opacity"
           }}
-          transition={{ duration: 21, repeat: Infinity, ease: "easeInOut" }}
+          animate={{
+            y: isMobile ? [0, 14, -10, 0] : [0, 50, -35, 0],
+            x: isMobile ? [0, 10, -8, 0] : [0, 35, -25, 0],
+            scale: [1, isMobile ? 1.07 : 1.18, isMobile ? 0.97 : 0.93, 1],
+          }}
+          transition={{
+            duration: isMobile ? 12 : 21,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
         />
         {/* Yellow blob */}
         <motion.div
-          className="absolute rounded-full blur-2xl opacity-22"
-          style={{ background: "#ffd600", width: 250, height: 250, top: 220, right: 80 }}
-          animate={{
-            y: [0, -38, 38, 0],
-            x: [0, -28, 28, 0],
-            scale: [1, 1.13, 0.87, 1],
+          className="absolute rounded-full"
+          style={{
+            background: "#ffd600",
+            width: isMobile ? 90 : 250,
+            height: isMobile ? 90 : 250,
+            top: isMobile ? 90 : 220,
+            right: isMobile ? 20 : 80,
+            filter: isMobile ? "blur(8px)" : "blur(32px)",
+            opacity: isMobile ? 0.09 : 0.22,
+            willChange: "transform, opacity"
           }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Blue blob */}
-        <motion.div
-          className="absolute rounded-full blur-2xl opacity-23"
-          style={{ background: "#2979ff", width: 310, height: 310, bottom: 90, left: 140 }}
           animate={{
-            y: [0, 38, -38, 0],
-            x: [0, 28, -28, 0],
-            scale: [1, 1.15, 0.95, 1],
+            y: isMobile ? [0, -10, 10, 0] : [0, -38, 38, 0],
+            x: isMobile ? [0, -8, 8, 0] : [0, -28, 28, 0],
+            scale: [1, isMobile ? 1.05 : 1.13, isMobile ? 0.96 : 0.87, 1],
           }}
-          transition={{ duration: 23, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Green blob */}
-        <motion.div
-          className="absolute rounded-full blur-2xl opacity-20"
-          style={{ background: "#00e676", width: 200, height: 200, bottom: 120, right: 120 }}
-          animate={{
-            y: [0, -28, 28, 0],
-            x: [0, 18, -18, 0],
-            scale: [1, 1.12, 0.92, 1],
+          transition={{
+            duration: isMobile ? 14 : 25,
+            repeat: Infinity,
+            ease: "easeInOut"
           }}
-          transition={{ duration: 27, repeat: Infinity, ease: "easeInOut" }}
         />
-        {/* Magenta blob */}
-        <motion.div
-          className="absolute rounded-full blur-2xl opacity-20"
-          style={{ background: "#d500f9", width: 160, height: 160, top: 420, left: "54%" }}
-          animate={{
-            y: [0, 18, -18, 0],
-            x: [0, -12, 12, 0],
-            scale: [1, 1.09, 0.91, 1],
-          }}
-          transition={{ duration: 29, repeat: Infinity, ease: "easeInOut" }}
-        />
-        {/* Extra subtle blob for depth */}
-        <motion.div
-          className="absolute rounded-full blur-2xl opacity-10"
-          style={{ background: "#ffd600", width: 100, height: 100, top: 500, left: "70%" }}
-          animate={{
-            y: [0, 10, -10, 0],
-            x: [0, 8, -8, 0],
-            scale: [1, 1.05, 0.95, 1],
-          }}
-          transition={{ duration: 33, repeat: Infinity, ease: "easeInOut" }}
-        />
+        {/* Only show extra blobs on desktop */}
+        {!isMobile && (
+          <>
+            {/* Blue blob */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#2979ff",
+                width: 310,
+                height: 310,
+                bottom: 90,
+                left: 140,
+                filter: "blur(32px)",
+                opacity: 0.23,
+                willChange: "transform, opacity"
+              }}
+              animate={{
+                y: [0, 38, -38, 0],
+                x: [0, 28, -28, 0],
+                scale: [1, 1.15, 0.95, 1],
+              }}
+              transition={{ duration: 23, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Green blob */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#00e676",
+                width: 200,
+                height: 200,
+                bottom: 120,
+                right: 120,
+                filter: "blur(32px)",
+                opacity: 0.20,
+                willChange: "transform, opacity"
+              }}
+              animate={{
+                y: [0, -28, 28, 0],
+                x: [0, 18, -18, 0],
+                scale: [1, 1.12, 0.92, 1],
+              }}
+              transition={{ duration: 27, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Magenta blob */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#d500f9",
+                width: 160,
+                height: 160,
+                top: 420,
+                left: "54%",
+                filter: "blur(32px)",
+                opacity: 0.20,
+                willChange: "transform, opacity"
+              }}
+              animate={{
+                y: [0, 18, -18, 0],
+                x: [0, -12, 12, 0],
+                scale: [1, 1.09, 0.91, 1],
+              }}
+              transition={{ duration: 29, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Extra subtle blob for depth */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#ffd600",
+                width: 100,
+                height: 100,
+                top: 500,
+                left: "70%",
+                filter: "blur(32px)",
+                opacity: 0.10,
+                willChange: "transform, opacity"
+              }}
+              animate={{
+                y: [0, 10, -10, 0],
+                x: [0, 8, -8, 0],
+                scale: [1, 1.05, 0.95, 1],
+              }}
+              transition={{ duration: 33, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </>
+        )}
         {/* Soft white overlay for luminosity */}
         <div className="absolute inset-0 bg-white/60 pointer-events-none" />
       </motion.div>
@@ -153,28 +223,32 @@ export default function AboutPage() {
         <div className="absolute inset-0 pointer-events-none">
           <motion.div 
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.3, scale: 1 }}
+            animate={{ opacity: isMobile ? 0.18 : 0.3, scale: 1 }}
             transition={{ duration: 1.5 }}
-            className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-red-400 blur-3xl"
+            className={`absolute -top-10 -right-10 ${isMobile ? "w-40 h-40" : "w-72 h-72"} rounded-full bg-red-400 ${isMobile ? "blur-lg" : "blur-3xl"}`}
           />
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.25, scale: 1 }}
-            transition={{ duration: 1.5, delay: 0.2 }}
-            className="absolute -bottom-20 left-1/3 w-80 h-80 rounded-full bg-yellow-400 blur-3xl"
-          />
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.2, scale: 1 }}
-            transition={{ duration: 1.5, delay: 0.4 }}
-            className="absolute top-40 left-10 w-60 h-60 rounded-full bg-green-400 blur-3xl"
-          />
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 0.15, scale: 1 }}
-            transition={{ duration: 1.5, delay: 0.6 }}
-            className="absolute -bottom-10 right-20 w-72 h-72 rounded-full bg-blue-400 blur-3xl"
-          />
+          {!isMobile && (
+            <>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 0.25, scale: 1 }}
+                transition={{ duration: 1.5, delay: 0.2 }}
+                className="absolute -bottom-20 left-1/3 w-80 h-80 rounded-full bg-yellow-400 blur-3xl"
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 0.2, scale: 1 }}
+                transition={{ duration: 1.5, delay: 0.4 }}
+                className="absolute top-40 left-10 w-60 h-60 rounded-full bg-green-400 blur-3xl"
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 0.15, scale: 1 }}
+                transition={{ duration: 1.5, delay: 0.6 }}
+                className="absolute -bottom-10 right-20 w-72 h-72 rounded-full bg-blue-400 blur-3xl"
+              />
+            </>
+          )}
         </div>
         <div className="container mx-auto px-4 relative z-10 flex flex-col items-center">
           <motion.div
@@ -260,14 +334,14 @@ export default function AboutPage() {
             className="mt-16 flex justify-center"
           >
             <div className="flex space-x-2 md:space-x-4">
-              {["#ff0000", "#ffff00", "#00ff00", "#0000ff", "#8b00ff", "#ff7700"].map((color, index) => (
+              {(isMobile ? ["#ff0000", "#00ff00", "#0000ff"] : ["#ff0000", "#ffff00", "#00ff00", "#0000ff", "#8b00ff", "#ff7700"]).map((color, index) => (
                 <motion.div
                   key={index}
-                  initial={{ y: 20, rotate: 0, scale: 1 }}
+                  initial={{ y: 10, rotate: 0, scale: 1 }}
                   animate={{
-                    y: [20, -10, 20],
+                    y: isMobile ? [10, -5, 10] : [20, -10, 20],
                     rotate: [0, 8, -8, 0],
-                    scale: [1, 1.08, 1]
+                    scale: [1, 1.05, 1]
                   }}
                   transition={{
                     duration: 4 + index,
@@ -275,8 +349,8 @@ export default function AboutPage() {
                     ease: "easeInOut",
                     delay: index * 0.2
                   }}
-                  whileHover={{ y: -20, scale: 1.15, boxShadow: `0 8px 24px 0 ${color}55` }}
-                  className="w-12 h-12 md:w-20 md:h-20 rounded-full shadow-lg flex items-center justify-center relative group cursor-pointer"
+                  whileHover={{ y: -15, scale: 1.1, boxShadow: `0 8px 24px 0 ${color}55` }}
+                  className={`w-12 h-12 md:w-20 md:h-20 rounded-full shadow-lg flex items-center justify-center relative group cursor-pointer`}
                   style={{ backgroundColor: color }}
                 >
                   {/* Show color code on hover */}
@@ -427,8 +501,8 @@ export default function AboutPage() {
                   <motion.div
                     className="absolute left-1/4 w-2 h-6 rounded-b-full"
                     style={{ background: "inherit" }}
-                    animate={{ y: [0, 8, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, delay: index * 0.3, ease: "easeInOut" }}
+                    animate={{ y: isMobile ? [0, 4, 0] : [0, 8, 0] }}
+                    transition={{ duration: isMobile ? 1.5 : 2.5, repeat: Infinity, delay: index * 0.3, ease: "easeInOut" }}
                   />
                   <motion.div
                     className="absolute left-1/2 w-1 h-4 rounded-b-full"
@@ -698,8 +772,8 @@ export default function AboutPage() {
                   <motion.div
                     className="absolute left-1/4 w-2 h-6 rounded-b-full"
                     style={{ background: "inherit" }}
-                    animate={{ y: [0, 8, 0] }}
-                    transition={{ duration: 2.5, repeat: Infinity, delay: idx * 0.3, ease: "easeInOut" }}
+                    animate={{ y: isMobile ? [0, 4, 0] : [0, 8, 0] }}
+                    transition={{ duration: isMobile ? 1.5 : 2.5, repeat: Infinity, delay: idx * 0.3, ease: "easeInOut" }}
                   />
                   <motion.div
                     className="absolute left-1/2 w-1 h-4 rounded-b-full"

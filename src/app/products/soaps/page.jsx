@@ -2,11 +2,13 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
+import useIsMobile from '../../../hooks/useIsMobile';
 
 export default function SoapsPage() {
   const [activeProduct, setActiveProduct] = useState(null);
+  const isMobile = useIsMobile();
 
   // Use real product names, keep image filenames as they are
   const soapProducts = [
@@ -104,7 +106,62 @@ export default function SoapsPage() {
 
   return (
     <div className="relative bg-white min-h-screen">
-      <div className="h-[56px]" /> {/* Spacer for header */}
+      {/* Animated background blobs */}
+      <motion.div
+        className="pointer-events-none fixed top-0 left-0 w-full h-full z-0"
+        initial={false}
+        animate={{}}
+      >
+        {/* Blue blob */}
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            background: "#60a5fa",
+            width: isMobile ? 100 : 220,
+            height: isMobile ? 100 : 220,
+            top: isMobile ? 30 : 80,
+            left: isMobile ? 10 : 60,
+            filter: isMobile ? "blur(8px)" : "blur(32px)",
+            opacity: isMobile ? 0.10 : 0.22,
+            willChange: "transform, opacity"
+          }}
+          animate={{
+            y: isMobile ? [0, 10, -8, 0] : [0, 30, -20, 0],
+            x: isMobile ? [0, 8, -6, 0] : [0, 20, -15, 0],
+            scale: [1, isMobile ? 1.04 : 1.12, isMobile ? 0.98 : 0.95, 1],
+          }}
+          transition={{
+            duration: isMobile ? 10 : 18,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        {/* Pink blob */}
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            background: "#f472b6",
+            width: isMobile ? 80 : 180,
+            height: isMobile ? 80 : 180,
+            bottom: isMobile ? 40 : 120,
+            right: isMobile ? 20 : 80,
+            filter: isMobile ? "blur(8px)" : "blur(32px)",
+            opacity: isMobile ? 0.08 : 0.18,
+            willChange: "transform, opacity"
+          }}
+          animate={{
+            y: isMobile ? [0, -8, 8, 0] : [0, -20, 20, 0],
+            x: isMobile ? [0, -6, 6, 0] : [0, -15, 15, 0],
+            scale: [1, isMobile ? 1.03 : 1.08, isMobile ? 0.97 : 0.92, 1],
+          }}
+          transition={{
+            duration: isMobile ? 12 : 22,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        {/* Add more blobs for desktop if desired */}
+      </motion.div>
       {/* Hero Section */}
       <div className="relative bg-gradient-to-r from-blue-800 via-purple-700 to-pink-500 text-white py-16 mb-8">
         <div className="container mx-auto px-4 text-center">

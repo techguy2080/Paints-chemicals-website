@@ -6,14 +6,124 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import * as Dialog from "@radix-ui/react-dialog";
 import { useRouter } from "next/navigation";
+import useIsMobile from "@/hooks/useIsMobile"; // Add this import
 
 export default function PaintProductsPage() {
   const products = usePaintProducts();
   const [activeProduct, setActiveProduct] = useState(null);
   const router = useRouter();
+  const isMobile = useIsMobile(); // Add this line
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12 relative">
+      {/* Animated background blobs */}
+      <motion.div
+        className="pointer-events-none fixed top-0 left-0 w-full h-full z-0"
+        initial={false}
+        animate={{}}
+      >
+        {/* Blue blob */}
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            background: "#60a5fa",
+            width: isMobile ? 100 : 220,
+            height: isMobile ? 100 : 220,
+            top: isMobile ? 30 : 80,
+            left: isMobile ? 10 : 60,
+            filter: isMobile ? "blur(8px)" : "blur(32px)",
+            opacity: isMobile ? 0.1 : 0.22,
+            willChange: "transform, opacity",
+          }}
+          animate={{
+            y: isMobile ? [0, 10, -8, 0] : [0, 30, -20, 0],
+            x: isMobile ? [0, 8, -6, 0] : [0, 20, -15, 0],
+            scale: [1, isMobile ? 1.04 : 1.12, isMobile ? 0.98 : 0.95, 1],
+          }}
+          transition={{
+            duration: isMobile ? 10 : 18,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        {/* Yellow blob */}
+        <motion.div
+          className="absolute rounded-full"
+          style={{
+            background: "#fde047",
+            width: isMobile ? 80 : 180,
+            height: isMobile ? 80 : 180,
+            bottom: isMobile ? 40 : 120,
+            right: isMobile ? 20 : 80,
+            filter: isMobile ? "blur(8px)" : "blur(32px)",
+            opacity: isMobile ? 0.08 : 0.18,
+            willChange: "transform, opacity",
+          }}
+          animate={{
+            y: isMobile ? [0, -8, 8, 0] : [0, -20, 20, 0],
+            x: isMobile ? [0, -6, 6, 0] : [0, -15, 15, 0],
+            scale: [1, isMobile ? 1.03 : 1.08, isMobile ? 0.97 : 0.92, 1],
+          }}
+          transition={{
+            duration: isMobile ? 12 : 22,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        {/* Extra blobs for desktop only */}
+        {!isMobile && (
+          <>
+            {/* Subtle purple blob */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#a78bfa",
+                width: 140,
+                height: 140,
+                top: 220,
+                left: 180,
+                filter: "blur(32px)",
+                opacity: 0.10,
+                willChange: "transform, opacity",
+              }}
+              animate={{
+                y: [0, 12, -12, 0],
+                x: [0, 8, -8, 0],
+                scale: [1, 1.06, 0.94, 1],
+              }}
+              transition={{
+                duration: 28,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            {/* Subtle green blob */}
+            <motion.div
+              className="absolute rounded-full"
+              style={{
+                background: "#bbf7d0",
+                width: 110,
+                height: 110,
+                bottom: 180,
+                right: 160,
+                filter: "blur(32px)",
+                opacity: 0.09,
+                willChange: "transform, opacity",
+              }}
+              animate={{
+                y: [0, -10, 10, 0],
+                x: [0, -6, 6, 0],
+                scale: [1, 1.04, 0.96, 1],
+              }}
+              transition={{
+                duration: 24,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </>
+        )}
+      </motion.div>
       {/* Back button above the grid */}
       <button
         className="mb-6 text-blue-600 underline text-base"

@@ -3,8 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from "framer-motion";
+import useIsMobile from "../../hooks/useIsMobile";
 
 export default function ServicesPage() {
+  const isMobile = useIsMobile();
+
   const services = [
     {
       id: 1,
@@ -60,17 +63,6 @@ export default function ServicesPage() {
     }
   ];
 
-  // Macro ink colors for blobs
-  const macroInkColors = [
-    "#ff1744", // Red
-    "#ffd600", // Yellow
-    "#2979ff", // Blue
-    "#00e676", // Green
-    "#d500f9", // Magenta
-  ];
-
-  const rainbowGradient = "from-red-500 via-yellow-400 to-blue-500";
-
   // Helper for macro ink background blobs and stirring tool
   function MacroInkBackground({ blobs = [], tool = false, toolProps = {}, z = 0 }) {
     return (
@@ -82,7 +74,7 @@ export default function ServicesPage() {
         {blobs.map((b, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full blur-2xl"
+            className="absolute rounded-full"
             style={{
               background: b.color,
               width: b.w,
@@ -91,8 +83,9 @@ export default function ServicesPage() {
               left: b.left,
               right: b.right,
               bottom: b.bottom,
-              opacity: b.opacity,
-              zIndex: 0,
+              opacity: isMobile ? b.opacity * 0.7 : b.opacity,
+              willChange: "transform, opacity",
+              filter: isMobile ? "blur(8px)" : "blur(32px)",
             }}
             animate={b.animate}
             transition={b.transition}
@@ -121,44 +114,60 @@ export default function ServicesPage() {
     );
   }
 
+  const rainbowGradient = "from-red-500 via-yellow-400 to-blue-500";
+
   return (
     <div className="overflow-hidden bg-gradient-to-b from-white to-gray-50 relative">
       {/* Global Macro Ink Animated Background */}
       <MacroInkBackground
         z={0}
-        blobs={[
-          {
-            color: "#ff1744", w: 340, h: 340, top: 80, left: 40, opacity: 0.28,
-            animate: { y: [0, 50, -35, 0], x: [0, 35, -25, 0], scale: [1, 1.18, 0.93, 1] },
-            transition: { duration: 24, repeat: Infinity, ease: "easeInOut" }
-          },
-          {
-            color: "#ffd600", w: 260, h: 260, top: 200, right: 60, opacity: 0.18,
-            animate: { y: [0, -35, 35, 0], x: [0, -25, 25, 0], scale: [1, 1.13, 0.87, 1] },
-            transition: { duration: 28, repeat: Infinity, ease: "easeInOut" }
-          },
-          {
-            color: "#2979ff", w: 320, h: 320, bottom: 80, left: 120, opacity: 0.18,
-            animate: { y: [0, 35, -35, 0], x: [0, 25, -25, 0], scale: [1, 1.15, 0.95, 1] },
-            transition: { duration: 26, repeat: Infinity, ease: "easeInOut" }
-          },
-          {
-            color: "#00e676", w: 200, h: 200, bottom: 120, right: 120, opacity: 0.16,
-            animate: { y: [0, -25, 25, 0], x: [0, 18, -18, 0], scale: [1, 1.12, 0.92, 1] },
-            transition: { duration: 32, repeat: Infinity, ease: "easeInOut" }
-          },
-          {
-            color: "#d500f9", w: 180, h: 180, top: 400, left: "55%", opacity: 0.16,
-            animate: { y: [0, 18, -18, 0], x: [0, -12, 12, 0], scale: [1, 1.09, 0.91, 1] },
-            transition: { duration: 34, repeat: Infinity, ease: "easeInOut" }
-          },
-          // Extra subtle blob for depth
-          {
-            color: "#ffd600", w: 120, h: 120, top: 500, left: "70%", opacity: 0.08,
-            animate: { y: [0, 10, -10, 0], x: [0, 8, -8, 0], scale: [1, 1.05, 0.95, 1] },
-            transition: { duration: 38, repeat: Infinity, ease: "easeInOut" }
-          }
-        ]}
+        blobs={
+          isMobile
+            ? [
+                {
+                  color: "#ff1744", w: 120, h: 120, top: 40, left: 40, opacity: 0.18,
+                  animate: { y: [0, 18, -12, 0], x: [0, 12, -8, 0], scale: [1, 1.08, 0.97, 1] },
+                  transition: { duration: 14, repeat: Infinity, ease: "easeInOut" }
+                },
+                {
+                  color: "#ffd600", w: 90, h: 90, top: 120, right: 60, opacity: 0.12,
+                  animate: { y: [0, -10, 10, 0], x: [0, -8, 8, 0], scale: [1, 1.06, 0.94, 1] },
+                  transition: { duration: 16, repeat: Infinity, ease: "easeInOut" }
+                }
+              ]
+            : [
+                {
+                  color: "#ff1744", w: 340, h: 340, top: 80, left: 40, opacity: 0.28,
+                  animate: { y: [0, 50, -35, 0], x: [0, 35, -25, 0], scale: [1, 1.18, 0.93, 1] },
+                  transition: { duration: 24, repeat: Infinity, ease: "easeInOut" }
+                },
+                {
+                  color: "#ffd600", w: 260, h: 260, top: 200, right: 60, opacity: 0.18,
+                  animate: { y: [0, -35, 35, 0], x: [0, -25, 25, 0], scale: [1, 1.13, 0.87, 1] },
+                  transition: { duration: 28, repeat: Infinity, ease: "easeInOut" }
+                },
+                {
+                  color: "#2979ff", w: 320, h: 320, bottom: 80, left: 120, opacity: 0.18,
+                  animate: { y: [0, 35, -35, 0], x: [0, 25, -25, 0], scale: [1, 1.15, 0.95, 1] },
+                  transition: { duration: 26, repeat: Infinity, ease: "easeInOut" }
+                },
+                {
+                  color: "#00e676", w: 200, h: 200, bottom: 120, right: 120, opacity: 0.16,
+                  animate: { y: [0, -25, 25, 0], x: [0, 18, -18, 0], scale: [1, 1.12, 0.92, 1] },
+                  transition: { duration: 32, repeat: Infinity, ease: "easeInOut" }
+                },
+                {
+                  color: "#d500f9", w: 180, h: 180, top: 400, left: "55%", opacity: 0.16,
+                  animate: { y: [0, 18, -18, 0], x: [0, -12, 12, 0], scale: [1, 1.09, 0.91, 1] },
+                  transition: { duration: 34, repeat: Infinity, ease: "easeInOut" }
+                },
+                {
+                  color: "#ffd600", w: 120, h: 120, top: 500, left: "70%", opacity: 0.08,
+                  animate: { y: [0, 10, -10, 0], x: [0, 8, -8, 0], scale: [1, 1.05, 0.95, 1] },
+                  transition: { duration: 38, repeat: Infinity, ease: "easeInOut" }
+                }
+              ]
+        }
       />
 
       {/* Hero Section */}
@@ -175,33 +184,48 @@ export default function ServicesPage() {
             transition: { duration: 7, repeat: Infinity, repeatDelay: 5, ease: "easeInOut" },
             animate: { y: [ -70, 30, 65, 30, -70 ], opacity: [0, 1, 1, 1, 0] }
           }}
-          blobs={[
-            {
-              color: "#ff1744", w: 180, h: 180, top: 40, left: 80, opacity: 0.42,
-              animate: { y: [0, 25, -18, 0], x: [0, 18, -12, 0], scale: [1, 1.12, 0.96, 1] },
-              transition: { duration: 13, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#ffd600", w: 120, h: 120, top: 120, right: 120, opacity: 0.32,
-              animate: { y: [0, -12, 12, 0], x: [0, -10, 10, 0], scale: [1, 1.09, 0.91, 1] },
-              transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#2979ff", w: 140, h: 140, bottom: 60, left: 180, opacity: 0.32,
-              animate: { y: [0, 14, -14, 0], x: [0, 10, -10, 0], scale: [1, 1.11, 0.97, 1] },
-              transition: { duration: 14, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#00e676", w: 100, h: 100, bottom: 80, right: 180, opacity: 0.27,
-              animate: { y: [0, -10, 10, 0], x: [0, 8, -8, 0], scale: [1, 1.07, 0.93, 1] },
-              transition: { duration: 16, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#d500f9", w: 90, h: 90, top: 180, left: "55%", opacity: 0.27,
-              animate: { y: [0, 8, -8, 0], x: [0, -7, 7, 0], scale: [1, 1.08, 0.92, 1] },
-              transition: { duration: 17, repeat: Infinity, ease: "easeInOut" }
-            }
-          ]}
+          blobs={
+            isMobile
+              ? [
+                  {
+                    color: "#ff1744", w: 180, h: 180, top: 40, left: 80, opacity: 0.42,
+                    animate: { y: [0, 25, -18, 0], x: [0, 18, -12, 0], scale: [1, 1.12, 0.96, 1] },
+                    transition: { duration: 13, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#ffd600", w: 120, h: 120, top: 120, right: 120, opacity: 0.32,
+                    animate: { y: [0, -12, 12, 0], x: [0, -10, 10, 0], scale: [1, 1.09, 0.91, 1] },
+                    transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+                  }
+                ]
+              : [
+                  {
+                    color: "#ff1744", w: 180, h: 180, top: 40, left: 80, opacity: 0.42,
+                    animate: { y: [0, 25, -18, 0], x: [0, 18, -12, 0], scale: [1, 1.12, 0.96, 1] },
+                    transition: { duration: 13, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#ffd600", w: 120, h: 120, top: 120, right: 120, opacity: 0.32,
+                    animate: { y: [0, -12, 12, 0], x: [0, -10, 10, 0], scale: [1, 1.09, 0.91, 1] },
+                    transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#2979ff", w: 140, h: 140, bottom: 60, left: 180, opacity: 0.32,
+                    animate: { y: [0, 14, -14, 0], x: [0, 10, -10, 0], scale: [1, 1.11, 0.97, 1] },
+                    transition: { duration: 14, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#00e676", w: 100, h: 100, bottom: 80, right: 180, opacity: 0.27,
+                    animate: { y: [0, -10, 10, 0], x: [0, 8, -8, 0], scale: [1, 1.07, 0.93, 1] },
+                    transition: { duration: 16, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#d500f9", w: 90, h: 90, top: 180, left: "55%", opacity: 0.27,
+                    animate: { y: [0, 8, -8, 0], x: [0, -7, 7, 0], scale: [1, 1.08, 0.92, 1] },
+                    transition: { duration: 17, repeat: Infinity, ease: "easeInOut" }
+                  }
+                ]
+          }
         />
         {/* Rainbow paint drips */}
         <div className="absolute top-0 inset-x-0 flex justify-around pointer-events-none z-10">
@@ -292,39 +316,54 @@ export default function ServicesPage() {
             transition: { duration: 9, repeat: Infinity, repeatDelay: 7, ease: "easeInOut" },
             animate: { y: [ -50, 20, 40, 20, -50 ], opacity: [0, 1, 1, 1, 0] }
           }}
-          blobs={[
-            {
-              color: "#ff1744", w: 120, h: 120, top: 60, left: 40, opacity: 0.20,
-              animate: { y: [0, 22, -15, 0], x: [0, 15, -10, 0], scale: [1, 1.11, 0.97, 1] },
-              transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#ffd600", w: 90, h: 90, top: 180, right: 80, opacity: 0.16,
-              animate: { y: [0, -12, 12, 0], x: [0, -9, 9, 0], scale: [1, 1.08, 0.92, 1] },
-              transition: { duration: 17, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#2979ff", w: 110, h: 110, bottom: 60, left: 120, opacity: 0.16,
-              animate: { y: [0, 12, -12, 0], x: [0, 7, -7, 0], scale: [1, 1.09, 0.95, 1] },
-              transition: { duration: 16, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#00e676", w: 80, h: 80, bottom: 80, right: 120, opacity: 0.14,
-              animate: { y: [0, -10, 10, 0], x: [0, 6, -6, 0], scale: [1, 1.06, 0.94, 1] },
-              transition: { duration: 18, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#d500f9", w: 70, h: 70, top: 220, left: "60%", opacity: 0.14,
-              animate: { y: [0, 8, -8, 0], x: [0, -5, 5, 0], scale: [1, 1.07, 0.93, 1] },
-              transition: { duration: 19, repeat: Infinity, ease: "easeInOut" }
-            },
-            // Extra subtle blob
-            {
-              color: "#2979ff", w: 60, h: 60, top: 300, left: "70%", opacity: 0.07,
-              animate: { y: [0, 5, -5, 0], x: [0, 4, -4, 0], scale: [1, 1.03, 0.97, 1] },
-              transition: { duration: 21, repeat: Infinity, ease: "easeInOut" }
-            }
-          ]}
+          blobs={
+            isMobile
+              ? [
+                  {
+                    color: "#ff1744", w: 120, h: 120, top: 60, left: 40, opacity: 0.20,
+                    animate: { y: [0, 22, -15, 0], x: [0, 15, -10, 0], scale: [1, 1.11, 0.97, 1] },
+                    transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#ffd600", w: 90, h: 90, top: 180, right: 80, opacity: 0.16,
+                    animate: { y: [0, -12, 12, 0], x: [0, -9, 9, 0], scale: [1, 1.08, 0.92, 1] },
+                    transition: { duration: 17, repeat: Infinity, ease: "easeInOut" }
+                  }
+                ]
+              : [
+                  {
+                    color: "#ff1744", w: 120, h: 120, top: 60, left: 40, opacity: 0.20,
+                    animate: { y: [0, 22, -15, 0], x: [0, 15, -10, 0], scale: [1, 1.11, 0.97, 1] },
+                    transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#ffd600", w: 90, h: 90, top: 180, right: 80, opacity: 0.16,
+                    animate: { y: [0, -12, 12, 0], x: [0, -9, 9, 0], scale: [1, 1.08, 0.92, 1] },
+                    transition: { duration: 17, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#2979ff", w: 110, h: 110, bottom: 60, left: 120, opacity: 0.16,
+                    animate: { y: [0, 12, -12, 0], x: [0, 7, -7, 0], scale: [1, 1.09, 0.95, 1] },
+                    transition: { duration: 16, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#00e676", w: 80, h: 80, bottom: 80, right: 120, opacity: 0.14,
+                    animate: { y: [0, -10, 10, 0], x: [0, 6, -6, 0], scale: [1, 1.06, 0.94, 1] },
+                    transition: { duration: 18, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#d500f9", w: 70, h: 70, top: 220, left: "60%", opacity: 0.14,
+                    animate: { y: [0, 8, -8, 0], x: [0, -5, 5, 0], scale: [1, 1.07, 0.93, 1] },
+                    transition: { duration: 19, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  // Extra subtle blob
+                  {
+                    color: "#2979ff", w: 60, h: 60, top: 300, left: "70%", opacity: 0.07,
+                    animate: { y: [0, 5, -5, 0], x: [0, 4, -4, 0], scale: [1, 1.03, 0.97, 1] },
+                    transition: { duration: 21, repeat: Infinity, ease: "easeInOut" }
+                  }
+                ]
+          }
         />
         <div className="container mx-auto px-4">
           <motion.div
@@ -433,33 +472,48 @@ export default function ServicesPage() {
             transition: { duration: 10, repeat: Infinity, repeatDelay: 8, ease: "easeInOut" },
             animate: { y: [ -60, 25, 50, 25, -60 ], opacity: [0, 1, 1, 1, 0] }
           }}
-          blobs={[
-            {
-              color: "#ff1744", w: 100, h: 100, top: 40, left: 60, opacity: 0.15,
-              animate: { y: [0, 15, -10, 0], x: [0, 10, -8, 0], scale: [1, 1.08, 0.96, 1] },
-              transition: { duration: 14, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#ffd600", w: 80, h: 80, top: 120, right: 100, opacity: 0.13,
-              animate: { y: [0, -8, 8, 0], x: [0, -6, 6, 0], scale: [1, 1.06, 0.94, 1] },
-              transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#2979ff", w: 90, h: 90, bottom: 60, left: 140, opacity: 0.13,
-              animate: { y: [0, 8, -8, 0], x: [0, 5, -5, 0], scale: [1, 1.07, 0.93, 1] },
-              transition: { duration: 16, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#00e676", w: 60, h: 60, bottom: 80, right: 140, opacity: 0.11,
-              animate: { y: [0, -6, 6, 0], x: [0, 4, -4, 0], scale: [1, 1.05, 0.95, 1] },
-              transition: { duration: 17, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#d500f9", w: 50, h: 50, top: 180, left: "65%", opacity: 0.11,
-              animate: { y: [0, 5, -5, 0], x: [0, -3, 3, 0], scale: [1, 1.04, 0.96, 1] },
-              transition: { duration: 18, repeat: Infinity, ease: "easeInOut" }
-            }
-          ]}
+          blobs={
+            isMobile
+              ? [
+                  {
+                    color: "#ff1744", w: 100, h: 100, top: 40, left: 60, opacity: 0.15,
+                    animate: { y: [0, 15, -10, 0], x: [0, 10, -8, 0], scale: [1, 1.08, 0.96, 1] },
+                    transition: { duration: 14, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#ffd600", w: 80, h: 80, top: 120, right: 100, opacity: 0.13,
+                    animate: { y: [0, -8, 8, 0], x: [0, -6, 6, 0], scale: [1, 1.06, 0.94, 1] },
+                    transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+                  }
+                ]
+              : [
+                  {
+                    color: "#ff1744", w: 100, h: 100, top: 40, left: 60, opacity: 0.15,
+                    animate: { y: [0, 15, -10, 0], x: [0, 10, -8, 0], scale: [1, 1.08, 0.96, 1] },
+                    transition: { duration: 14, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#ffd600", w: 80, h: 80, top: 120, right: 100, opacity: 0.13,
+                    animate: { y: [0, -8, 8, 0], x: [0, -6, 6, 0], scale: [1, 1.06, 0.94, 1] },
+                    transition: { duration: 15, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#2979ff", w: 90, h: 90, bottom: 60, left: 140, opacity: 0.13,
+                    animate: { y: [0, 8, -8, 0], x: [0, 5, -5, 0], scale: [1, 1.07, 0.93, 1] },
+                    transition: { duration: 16, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#00e676", w: 60, h: 60, bottom: 80, right: 140, opacity: 0.11,
+                    animate: { y: [0, -6, 6, 0], x: [0, 4, -4, 0], scale: [1, 1.05, 0.95, 1] },
+                    transition: { duration: 17, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#d500f9", w: 50, h: 50, top: 180, left: "65%", opacity: 0.11,
+                    animate: { y: [0, 5, -5, 0], x: [0, -3, 3, 0], scale: [1, 1.04, 0.96, 1] },
+                    transition: { duration: 18, repeat: Infinity, ease: "easeInOut" }
+                  }
+                ]
+          }
         />
         <div className="container mx-auto px-4">
           <motion.div
@@ -547,23 +601,38 @@ export default function ServicesPage() {
             transition: { duration: 11, repeat: Infinity, repeatDelay: 9, ease: "easeInOut" },
             animate: { y: [ -40, 15, 30, 15, -40 ], opacity: [0, 1, 1, 1, 0] }
           }}
-          blobs={[
-            {
-              color: "#ffd600", w: 120, h: 120, top: 30, left: 80, opacity: 0.12,
-              animate: { y: [0, 12, -10, 0], x: [0, 10, -8, 0], scale: [1, 1.08, 0.96, 1] },
-              transition: { duration: 12, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#00e676", w: 100, h: 100, bottom: 30, right: 80, opacity: 0.12,
-              animate: { y: [0, -10, 10, 0], x: [0, -8, 8, 0], scale: [1, 1.06, 0.94, 1] },
-              transition: { duration: 13, repeat: Infinity, ease: "easeInOut" }
-            },
-            {
-              color: "#ff1744", w: 80, h: 80, top: 120, left: "60%", opacity: 0.10,
-              animate: { y: [0, 8, -8, 0], x: [0, 6, -6, 0], scale: [1, 1.05, 0.95, 1] },
-              transition: { duration: 14, repeat: Infinity, ease: "easeInOut" }
-            }
-          ]}
+          blobs={
+            isMobile
+              ? [
+                  {
+                    color: "#ffd600", w: 120, h: 120, top: 30, left: 80, opacity: 0.12,
+                    animate: { y: [0, 12, -10, 0], x: [0, 10, -8, 0], scale: [1, 1.08, 0.96, 1] },
+                    transition: { duration: 12, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#00e676", w: 100, h: 100, bottom: 30, right: 80, opacity: 0.12,
+                    animate: { y: [0, -10, 10, 0], x: [0, -8, 8, 0], scale: [1, 1.06, 0.94, 1] },
+                    transition: { duration: 13, repeat: Infinity, ease: "easeInOut" }
+                  }
+                ]
+              : [
+                  {
+                    color: "#ffd600", w: 120, h: 120, top: 30, left: 80, opacity: 0.12,
+                    animate: { y: [0, 12, -10, 0], x: [0, 10, -8, 0], scale: [1, 1.08, 0.96, 1] },
+                    transition: { duration: 12, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#00e676", w: 100, h: 100, bottom: 30, right: 80, opacity: 0.12,
+                    animate: { y: [0, -10, 10, 0], x: [0, -8, 8, 0], scale: [1, 1.06, 0.94, 1] },
+                    transition: { duration: 13, repeat: Infinity, ease: "easeInOut" }
+                  },
+                  {
+                    color: "#ff1744", w: 80, h: 80, top: 120, left: "60%", opacity: 0.10,
+                    animate: { y: [0, 8, -8, 0], x: [0, 6, -6, 0], scale: [1, 1.05, 0.95, 1] },
+                    transition: { duration: 14, repeat: Infinity, ease: "easeInOut" }
+                  }
+                ]
+          }
         />
         <div className="container mx-auto px-4 relative z-10">
           <motion.div
