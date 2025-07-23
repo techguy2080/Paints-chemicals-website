@@ -9,8 +9,8 @@ export default function PremiumImage({ src, alt, children, height = 320 }) {
         src={src}
         alt={alt}
         fill
-        className="object-cover w-full h-full scale-105" // removed blur-sm
-        quality={70} // increase quality for main images
+        className="object-cover w-full h-full scale-105" 
+        quality={70} 
         sizes="100vw"
         priority
       />

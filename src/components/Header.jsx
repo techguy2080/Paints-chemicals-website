@@ -114,6 +114,7 @@ export default function Header() {
             { name: "About Us", href: "/about" },
             { name: "Products", href: "/products" },
             { name: "Services", href: "/services" },
+            { name: "Resources", href: "/resources" }, // Added Resources page
             { name: "Contact", href: "/contact" },
           ].map((item, index) => (
             <motion.div
@@ -176,6 +177,7 @@ export default function Header() {
               { name: "About Us", href: "/about" },
               { name: "Products", href: "/products" },
               { name: "Services", href: "/services" },
+              { name: "Resources", href: "/resources" }, // Added Resources page
               { name: "Contact", href: "/contact" },
             ].map((item, index) => (
               <motion.div
