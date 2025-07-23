@@ -1,19 +1,31 @@
 "use client";
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from "framer-motion";
 import useIsMobile from "../../hooks/useIsMobile";
+import PremiumImage from "@/components/PremiumImage";
 
 export default function ServicesPage() {
   const isMobile = useIsMobile();
+
+  // Assign branding images to services
+  const brandingImages = [
+    "/images/branding/chris.jpg",
+    "/images/branding/colera.jpg",
+    "/images/branding/delta.jpg",
+    "/images/branding/katogo.jpg",
+    "/images/branding/sacks.jpg",
+    "/images/branding/transport.jpg",
+    "/images/branding/jwtjpg.jpg",
+    "/images/branding/whatsapp.jpg",
+  ];
 
   const services = [
     {
       id: 1,
       title: "Professional Painting Services",
       description: "Our team of experienced painters provides high-quality painting services for residential and commercial properties. We handle everything from surface preparation to the final coat, ensuring a flawless finish that lasts.",
-      image: "/images/services/painting-service.jpg",
+      image: brandingImages[0],
       features: [
         "Interior and exterior painting",
         "Surface preparation and repairs",
@@ -26,7 +38,7 @@ export default function ServicesPage() {
       id: 2,
       title: "Chemical Supply",
       description: "We supply a wide range of chemicals for various industrial and commercial applications. Our chemical products meet international standards and are sourced from reputable manufacturers.",
-      image: "/images/services/chemical-supply.jpg",
+      image: brandingImages[1],
       features: [
         "Industrial-grade chemicals",
         "Laboratory reagents",
@@ -39,7 +51,7 @@ export default function ServicesPage() {
       id: 3,
       title: "Paint Manufacturing Training",
       description: "Learn the art and science of paint manufacturing with our comprehensive training programs. Our courses cover everything from basic concepts to advanced formulations, equipment operation, and quality control.",
-      image: "/images/services/paint-training.jpg",
+      image: brandingImages[2],
       features: [
         "Hands-on practical sessions",
         "Formulation techniques",
@@ -52,7 +64,7 @@ export default function ServicesPage() {
       id: 4,
       title: "Soap Manufacturing Training",
       description: "Our soap manufacturing training programs equip participants with the knowledge and skills needed to produce high-quality soaps. From basic techniques to advanced formulations, we cover all aspects of soap production.",
-      image: "/images/services/soap-training.jpg",
+      image: brandingImages[3],
       features: [
         "Soap formulation basics",
         "Production techniques",
@@ -293,11 +305,10 @@ export default function ServicesPage() {
         </div>
         {/* Subtle background image */}
         <div className="absolute inset-0 opacity-10 pointer-events-none">
-          <Image
+          <PremiumImage
             src="/images/services-bg.jpg"
             alt="Our Services"
-            fill
-            style={{ objectFit: 'cover' }}
+            height={600}
           />
         </div>
       </section>
@@ -407,11 +418,10 @@ export default function ServicesPage() {
               >
                 <div className="md:w-1/2">
                   <div className="rounded-2xl overflow-hidden shadow-xl relative h-80 bg-gradient-to-br from-white/60 to-blue-50/60 backdrop-blur-lg border border-white/40">
-                    <Image
+                    <PremiumImage
                       src={service.image}
                       alt={service.title}
-                      fill
-                      className="object-cover"
+                      height={320}
                     />
                     {/* Rainbow border accent */}
                     <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${rainbowGradient}`} />
@@ -657,6 +667,54 @@ export default function ServicesPage() {
               </Link>
             </motion.div>
           </motion.div>
+        </div>
+      </section>
+
+
+      {/* Branding Section - New Addition */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold mb-4">
+              Trusted By Leading Brands
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mt-4">
+              Our services are trusted by top brands and companies across various industries.
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              "/images/branding/chris.jpg",
+              "/images/branding/colera.jpg",
+              "/images/branding/delta.jpg",
+              "/images/branding/katogo.jpg",
+              "/images/branding/sacks.jpg",
+              "/images/branding/transport.jpg",
+              "/images/branding/jwtjpg.jpg",
+              "/images/branding/whatsapp.jpg",
+            ].map((src, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.6 }}
+                className="flex items-center justify-center"
+              >
+                <img
+                  src={src}
+                  alt={`Branding Image ${index + 1}`}
+                  className="max-w-full h-auto rounded-lg shadow-md"
+                />
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
     </div>

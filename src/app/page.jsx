@@ -8,6 +8,7 @@ import { Dialog } from "@headlessui/react";
 import * as Popover from "@radix-ui/react-popover";
 import CookieConsent from "./components/CookieConsent";
 import useIsMobile from "../hooks/useIsMobile";
+import PremiumImage from "../components/PremiumImage";
 
 export default function HomePage() {
   const isMobile = useIsMobile();
@@ -377,15 +378,12 @@ export default function HomePage() {
                 }}
                 className="bg-white rounded-xl overflow-hidden shadow-xl group border border-gray-100"
               >
-                <div className="h-64 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-20 z-10" />
-                  <div className="absolute top-0 left-0 w-full h-1 z-10 bg-gradient-to-r from-[#ff1744] via-[#ffd600] via-[#2979ff] via-[#00e676] to-[#d500f9]" />
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                {/* Use PremiumImage here */}
+                <PremiumImage
+                  src={product.image}
+                  alt={product.name}
+                  height={320}
+                >
                   <div className="absolute top-4 right-4 bg-white py-1 px-3 rounded-full z-10">
                     <span
                       className="text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-[#ff1744] via-[#ffd600] via-[#2979ff] via-[#00e676] to-[#d500f9]"
@@ -393,7 +391,7 @@ export default function HomePage() {
                       {product.category === "paint" ? "Paint" : "Soap"}
                     </span>
                   </div>
-                </div>
+                </PremiumImage>
                 <div className="p-6">
                   <h3 className="text-2xl font-bold mb-2 text-gray-900 drop-shadow">
                     {product.name}
@@ -532,6 +530,35 @@ export default function HomePage() {
               </div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Premium Branding Gallery */}
+      <section className="py-20 bg-white relative z-10">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 drop-shadow">
+            Inside AC Company
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <PremiumImage src="/images/branding/chris.jpg" alt="Chris - Team" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow"></span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/colera.jpg" alt="Colera - On Site" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow"></span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/delta.jpg" alt="Delta - Project" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow"></span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/katogo.jpg" alt="Katogo - Team" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow"></span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/sacks.jpg" alt="Sacks - Products" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow"></span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/transport.jpg" alt="Transport - Delivery" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow"></span>
+            </PremiumImage>
+          </div>
         </div>
       </section>
 

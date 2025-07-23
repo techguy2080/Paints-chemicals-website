@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import useIsMobile from "@/hooks/useIsMobile";
+import PremiumImage from "@/components/PremiumImage";
 
 export default function AboutPage() {
   const isMobile = useIsMobile();
@@ -296,71 +297,41 @@ export default function AboutPage() {
 
       {/* Company Overview */}
       <section className="py-24">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">Overview</h2>
-            <div className="space-y-6 text-lg text-gray-700">
-              <p>
-                AC Company Limited is a diversified and innovative company committed to excellence in manufacturing
-                and services. Established in 2022 with a vision to provide top-quality products and practical training
-                solutions, we specialize in the production of premium quality paints and coatings and top-quality soaps,
-                offer professional painting services, supply a wide range of chemicals, and deliver expert training in both
-                paint and soap manufacturing.
-              </p>
-              <p>
-                Our products are designed for durability, aesthetic appeal, and environmental safety, ensuring a long-lasting
-                and flawless finish for every project.
-              </p>
-              <p>
-                With a strong foundation in research, quality control, and customer satisfaction, we pride ourselves on
-                being a reliable partner for individuals, businesses, and industries seeking dependable and sustainable
-                products and services.
-              </p>
-            </div>
-          </motion.div>
-          
-          {/* Colorful paint cans decoration */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="mt-16 flex justify-center"
-          >
-            <div className="flex space-x-2 md:space-x-4">
-              {(isMobile ? ["#ff0000", "#00ff00", "#0000ff"] : ["#ff0000", "#ffff00", "#00ff00", "#0000ff", "#8b00ff", "#ff7700"]).map((color, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ y: 10, rotate: 0, scale: 1 }}
-                  animate={{
-                    y: isMobile ? [10, -5, 10] : [20, -10, 20],
-                    rotate: [0, 8, -8, 0],
-                    scale: [1, 1.05, 1]
-                  }}
-                  transition={{
-                    duration: 4 + index,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: index * 0.2
-                  }}
-                  whileHover={{ y: -15, scale: 1.1, boxShadow: `0 8px 24px 0 ${color}55` }}
-                  className={`w-12 h-12 md:w-20 md:h-20 rounded-full shadow-lg flex items-center justify-center relative group cursor-pointer`}
-                  style={{ backgroundColor: color }}
-                >
-                  {/* Show color code on hover */}
-                  <span className="absolute inset-0 flex items-center justify-center text-white text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/40 rounded-full">
-                    {color.toUpperCase()}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
+          <div className="flex-1">
+            <motion.div 
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-3xl mx-auto"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center md:text-left text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">Overview</h2>
+              <div className="space-y-6 text-lg text-gray-700">
+                <p>
+                  AC Company Limited is a diversified and innovative company committed to excellence in manufacturing
+                  and services. Established in 2022 with a vision to provide top-quality products and practical training
+                  solutions, we specialize in the production of premium quality paints and coatings and top-quality soaps,
+                  offer professional painting services, supply a wide range of chemicals, and deliver expert training in both
+                  paint and soap manufacturing.
+                </p>
+                <p>
+                  Our products are designed for durability, aesthetic appeal, and environmental safety, ensuring a long-lasting
+                  and flawless finish for every project.
+                </p>
+                <p>
+                  With a strong foundation in research, quality control, and customer satisfaction, we pride ourselves on
+                  being a reliable partner for individuals, businesses, and industries seeking dependable and sustainable
+                  products and services.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+          <div className="flex-1">
+            <PremiumImage src="/images/branding/chris.jpg" alt="AC Company Team" height={500}>
+              <span className="text-white text-lg font-semibold drop-shadow">Our Team at Work</span>
+            </PremiumImage>
+          </div>
         </div>
       </section>
 
@@ -444,6 +415,38 @@ export default function AboutPage() {
                 providing long-term value to our clients.
               </p>
             </motion.div>
+          </div>
+        </div>
+        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
+          <PremiumImage src="/images/branding/vision-bg.jpg" alt="Vision Background" height={400} />
+        </div>
+      </section>
+
+      {/* Premium Branding Gallery */}
+      <section className="py-20 bg-white relative z-10 mb-32 border-4 border-red-500">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center text-gray-900 drop-shadow">
+            Company Gallery
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+            <PremiumImage src="/images/branding/chris.jpg" alt="Team Collaboration" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow">Team Collaboration</span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/colera.jpg" alt="On Site Project" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow">On Site Project</span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/delta.jpg" alt="Project Showcase" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow">Project Showcase</span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/katogo.jpg" alt="Production Process" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow">Production Process</span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/sacks.jpg" alt="Our Products" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow">Our Products</span>
+            </PremiumImage>
+            <PremiumImage src="/images/branding/transport.jpg" alt="Delivery Fleet" height={320}>
+              <span className="text-white text-lg font-semibold drop-shadow">Delivery Fleet</span>
+            </PremiumImage>
           </div>
         </div>
       </section>
@@ -576,12 +579,12 @@ export default function AboutPage() {
                   {
                     title: "Premium Ingredients",
                     description: "We use only the highest quality materials in our products",
-                    color: "from-red-400 to-red-600"
+                    color: "from-blue-400 to-blue-600"
                   },
                   {
                     title: "Rigorous Testing",
                     description: "Every batch undergoes extensive quality assurance",
-                    color: "from-orange-400 to-orange-600"
+                    color: "from-purple-400 to-purple-600"
                   },
                   {
                     title: "Color Consistency",
@@ -600,11 +603,11 @@ export default function AboutPage() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.2, duration: 0.5 }}
-                    className="bg-white/20 backdrop-blur-lg rounded-xl p-6 hover:bg-white/30 transition-all duration-300 shadow-lg"
+                    className="bg-white border border-blue-100 rounded-xl p-6 hover:shadow-lg transition-all duration-300"
                   >
                     <div className={`h-2 w-16 mb-4 rounded-full bg-gradient-to-r ${item.color}`}></div>
-                    <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
-                    <p className="text-blue-100">{item.description}</p>
+                    <h3 className="text-xl font-bold mb-2 text-blue-800">{item.title}</h3>
+                    <p className="text-gray-700">{item.description}</p>
                   </motion.div>
                 ))}
               </div>
@@ -614,7 +617,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.8, duration: 0.5 }}
-                className="mt-12 text-2xl font-semibold text-center text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-pink-300 to-blue-300"
+                className="mt-12 text-2xl font-semibold text-center text-blue-800"
               >
                 At AC Company Limited, quality is not a promise — it is our practice.
               </motion.p>
