@@ -3,12 +3,77 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Color palette data
+const colorPalette = [
+  // Row 1
+  { name: "Broken White", hex: "#F8F8F5" },
+  { name: "Off White", hex: "#F3F1EA" },
+  { name: "Butter", hex: "#FFF7C2" },
+  { name: "Vanilla", hex: "#FFF3B0" },
+  { name: "Ivory", hex: "#F6E2B3" },
+  // Row 2
+  { name: "Sunlight Yellow", hex: "#FFE066" },
+  { name: "Mint Green", hex: "#D7FBE8" },
+  { name: "Apple Green", hex: "#B7E778" },
+  { name: "Milo Green", hex: "#4C7C4C" },
+  { name: "Mermaid Green", hex: "#7DB59A" },
+  // Row 3
+  { name: "Soft Blue", hex: "#D6ECFF" },
+  { name: "Blue", hex: "#3B82F6" },
+  { name: "Deep Blue", hex: "#1E3A8A" },
+  { name: "Light Purple", hex: "#E3D1F7" },
+  { name: "Deep Purple", hex: "#6D28D9" },
+  // Row 4
+  { name: "Pink", hex: "#F472B6" },
+  { name: "Terracotta", hex: "#D96C4A" },
+  { name: "Magnolia", hex: "#FFE5D4" },
+  { name: "Cream", hex: "#FFD9B3" },
+  { name: "Student Cream", hex: "#E9CBA7" },
+  // Row 5
+  { name: "Peach", hex: "#FFB085" },
+  { name: "Mango", hex: "#FFB300" },
+  { name: "Beige", hex: "#D7B899" },
+  { name: "Light Stone", hex: "#E4DED7" },
+  { name: "Deep Stone", hex: "#7C6F65" },
+  // Row 6
+  { name: "Smoke Grey", hex: "#B0B8C1" },
+  { name: "Grey", hex: "#7E7E7E" },
+  { name: "Charcoal Black", hex: "#232323" },
+];
+
+function Swatch({ name, hex, selected, onClick }) {
+  return (
+    <div className="flex flex-col items-center">
+      <button
+        className={`w-16 h-16 md:w-20 md:h-20 rounded-lg shadow border border-gray-200 relative transition-all duration-200 focus:outline-none ${
+          selected ? "ring-2 ring-blue-400" : ""
+        }`}
+        style={{ background: hex }}
+        aria-label={name}
+        onClick={onClick}
+      >
+        {/* Decorative brackets for selection */}
+        {selected && (
+          <>
+            <span className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-gray-700 rounded-tl-sm" />
+            <span className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-gray-700 rounded-tr-sm" />
+            <span className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-gray-700 rounded-bl-sm" />
+            <span className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-gray-700 rounded-br-sm" />
+          </>
+        )}
+      </button>
+      <span className="mt-2 text-xs md:text-sm font-medium text-gray-900 text-center">{name}</span>
+    </div>
+  );
+}
+
 export default function ResourcesPage() {
   const [open, setOpen] = useState({
     coverage: true,
     application: false,
     safety: false,
   });
+  const [selected, setSelected] = useState(null);
 
   return (
     <div className="bg-white min-h-screen py-16">
@@ -24,6 +89,49 @@ export default function ResourcesPage() {
         <p className="text-lg text-center text-gray-600 mb-16 max-w-2xl mx-auto">
           Your go-to hub for technical guides, safety, and best practices for paints, coatings, and cleaning products. Explore our expert resources below!
         </p>
+
+        {/* --- Color Palette Guide --- */}
+        <section className="mb-20">
+          <div className="max-w-3xl mx-auto mb-8">
+            <h2 className="text-3xl font-bold text-center mb-4 text-blue-800">Color Palette Guide</h2>
+            <p className="text-center text-gray-700 mb-6">
+              Browse our curated palette of popular wall and decor colors. Click any swatch to preview and get inspiration for your next project!
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-2xl shadow-lg p-6 md:p-10 border border-blue-100">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 md:gap-8">
+              {colorPalette.map((color, i) => (
+                <Swatch
+                  key={color.name}
+                  name={color.name}
+                  hex={color.hex}
+                  selected={selected === i}
+                  onClick={() => setSelected(i)}
+                />
+              ))}
+            </div>
+            {selected !== null && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className="mt-8 flex flex-col items-center"
+              >
+                <div
+                  className="w-32 h-32 md:w-40 md:h-40 rounded-xl shadow-lg border-2 border-blue-400 mb-4"
+                  style={{ background: colorPalette[selected].hex }}
+                />
+                <div className="text-lg md:text-xl font-semibold text-blue-800 mb-1">
+                  {colorPalette[selected].name}
+                </div>
+                <div className="text-sm text-gray-600">Hex: {colorPalette[selected].hex}</div>
+                <div className="mt-2 text-center text-gray-700 max-w-md">
+                  {getColorDescription(colorPalette[selected].name)}
+                </div>
+              </motion.div>
+            )}
+          </div>
+        </section>
 
         {/* Coverage & Calculation */}
         <section className="mb-12">
@@ -339,4 +447,68 @@ export default function ResourcesPage() {
       </div>
     </div>
   );
+}
+
+// Helper: Color descriptions for user inspiration
+function getColorDescription(name) {
+  switch (name) {
+    case "Broken White":
+      return "A timeless, versatile off-white that brightens any space and pairs well with both modern and classic decor.";
+    case "Off White":
+      return "A warm, welcoming neutral perfect for living rooms, bedrooms, and ceilings.";
+    case "Butter":
+      return "Soft and cheerful, this yellow brings a gentle glow to kitchens and nurseries.";
+    case "Vanilla":
+      return "A creamy, inviting yellow ideal for cozy, sunlit rooms.";
+    case "Ivory":
+      return "Elegant and understated, ivory works beautifully in hallways and open spaces.";
+    case "Sunlight Yellow":
+      return "Vivid and energizing, this yellow is great for accent walls or creative spaces.";
+    case "Mint Green":
+      return "Fresh and calming, mint green is perfect for bathrooms or restful bedrooms.";
+    case "Apple Green":
+      return "Bright and lively, apple green enlivens kitchens and playrooms.";
+    case "Milo Green":
+      return "A deep, natural green for a sophisticated, earthy vibe.";
+    case "Mermaid Green":
+      return "A unique, muted green that adds character to any feature wall.";
+    case "Soft Blue":
+      return "Light and airy, soft blue is ideal for tranquil bedrooms or offices.";
+    case "Blue":
+      return "Classic and bold, this blue suits both modern and traditional interiors.";
+    case "Deep Blue":
+      return "Rich and dramatic, deep blue is perfect for statement walls or cozy dens.";
+    case "Light Purple":
+      return "Gentle and dreamy, light purple is wonderful for children's rooms.";
+    case "Deep Purple":
+      return "Luxurious and regal, deep purple adds depth to living or dining rooms.";
+    case "Pink":
+      return "Fun and playful, pink is great for accent walls or creative spaces.";
+    case "Terracotta":
+      return "Warm and rustic, terracotta brings a Mediterranean feel to any room.";
+    case "Magnolia":
+      return "Soft and subtle, magnolia is a classic for timeless elegance.";
+    case "Cream":
+      return "Warm and inviting, cream is a favorite for family spaces.";
+    case "Student Cream":
+      return "A practical, earthy tone ideal for study areas or home offices.";
+    case "Peach":
+      return "Soft and friendly, peach is perfect for bedrooms or social spaces.";
+    case "Mango":
+      return "Vibrant and bold, mango makes a striking accent color.";
+    case "Beige":
+      return "A neutral staple, beige complements any color scheme.";
+    case "Light Stone":
+      return "Modern and clean, light stone is great for minimalist designs.";
+    case "Deep Stone":
+      return "Strong and grounding, deep stone is ideal for feature walls.";
+    case "Smoke Grey":
+      return "Cool and contemporary, smoke grey fits urban and industrial looks.";
+    case "Grey":
+      return "A classic mid-tone grey for versatile, balanced interiors.";
+    case "Charcoal Black":
+      return "Sophisticated and bold, charcoal black makes a dramatic statement.";
+    default:
+      return "A beautiful color for your next project!";
+  }
 }
